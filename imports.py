@@ -52,5 +52,19 @@ def get_language_key(language: str) -> int:
     return 32
 
 
+def get_country_key(country_code: str) -> int:
+    """"Gets country key"""
+    curs = get_cursor(conn)
+    curs.execute("""SELECT id
+                   FROM country
+                   WHERE country_name LIKE %s;""",
+                 (country_code,))
+    data = curs.fetchone()
+    curs.close()
+    if data:
+        return data["id"]
+    return 61
+
+
 if __name__ == "__main__":
     movies = load_to_csv("imdb_movies.csv")
