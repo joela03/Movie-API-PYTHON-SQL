@@ -1,12 +1,12 @@
 -- This file contains all of the SQL commands to create the database, tables and relationships for the Movies Database
 
-DROP TABLE movie_genres;
-DROP TABLE genre;
-DROP TABLE languages;
-DROP TABLE country;
-DROP TABLE movie;
+DROP TABLE IF EXISTS movie_genres;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS languages;
+DROP TABLE IF EXISTS country;
+DROP TABLE IF EXISTS movie;
 
-CREATE TABLE movie_genres (
+CREATE TABLE movie_genres(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     movie_id BIGINT NOT NULL,
     genre_id BIGINT NOT NULL
@@ -15,19 +15,19 @@ CREATE TABLE movie_genres (
 CREATE TABLE genre(
     genre_id BIGINT,
     genre_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(genre_id)
 );
 
 CREATE TABLE languages(
     language_id BIGINT,
     language_name VARCHAR(30) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(language_id)
 );
 
 CREATE TABLE country(
     country_id BIGINT,
     country_name VARCHAR(56) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(country_id)
 );
 
 CREATE TABLE movie(
@@ -44,7 +44,7 @@ CREATE TABLE movie(
     PRIMARY KEY(movie_id)
 );
 
-INSERT INTO languages (id, language_name) VALUES
+INSERT INTO languages (language_id, language_name) VALUES
 (1, 'English'),
 (2, 'Spanish'),
 (3, 'Norwegian'),
@@ -98,7 +98,7 @@ INSERT INTO languages (id, language_name) VALUES
 (51, 'Dzongkha'),
 (52, 'Slovak');
 
-INSERT INTO country (id, country_name) VALUES
+INSERT INTO country (country_id, country_name) VALUES
 (1, 'AU'),
 (2, 'US'),
 (3, 'MX'),
@@ -161,7 +161,7 @@ INSERT INTO country (id, country_name) VALUES
 (60, 'IR'),
 (61, 'XX');
 
-INSERT INTO genre (id, genre_name) VALUES
+INSERT INTO genre(genre_id, genre_name) VALUES
 (1, 'Fantasy'),
 (2, 'Science Fiction'),
 (3, 'Comedy'),
