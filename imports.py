@@ -5,8 +5,8 @@ import psycopg2
 import psycopg2.extras
 
 
-connection = psycopg2.connect(host='localhost', user='joel',
-                              dbname='movies', port=5432)
+conn = psycopg2.connect(host='localhost', user='joel',
+                        dbname='movies', port=5432)
 
 
 def get_cursor(connection: psycopg2.extensions.connection) -> psycopg2.extensions.cursor:
@@ -20,6 +20,21 @@ def load_to_csv(filename: str) -> list[dict]:
         for line in csv.DictReader(f):
             data.append(line)
     return data
+
+
+def get_genre_key(genre: str) -> int:
+    """Gets genre key"""
+    curs = get_cursor(conn)
+    curs.execute("""SELECT id
+                   FROM genre
+                   WHERE genre_name LIKE %s;""",
+                 (genre,))
+    data = curs.fetchone()
+    curs.close()
+    if data:
+        return data["id"]
+
+    return 20
 
 
 if __name__ == "__main__":
