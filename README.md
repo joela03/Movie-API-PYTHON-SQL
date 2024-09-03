@@ -1,0 +1,3 @@
+## Movie API
+
+The purpose of this project is to create an API that connects a SQL database to an API hosted on flask so that users can query for movies within the database based on specific criteria. We have an imdb_movie.csv file with over 10,000 rows of data, it contains the columns names,date_x,score,genre,overview,orig_title,status,orig_lang,budget_x,revenue,country. To reduce the dimensionality of the data and convert it into 3nf format using the schema.png file.
