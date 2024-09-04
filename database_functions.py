@@ -16,18 +16,21 @@ def get_movies(search: str = None, sort_by: str = None, sort_order: str = None,)
     curs = get_cursor(conn)
 
     query = "SELECT * FROM movie"
+    params = []
 
     if search:
         search = '%'+search+'%'
         query += " WHERE title ILIKE %s"
+        params.append(search)
 
     if sort_by:
         query += " ORDER BY " + sort_by
         if sort_order:
-            if sort_order == "ascending":
-                query += sort_order
+            query += sort_order
+        else:
+            query += " DESC"
 
-    curs.execute(query, (search,))
+    curs.execute(query, (params,))
     data = curs.fetchall()
     curs.close()
 
