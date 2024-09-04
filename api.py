@@ -16,6 +16,8 @@ def endpoint_index():
 def endpoint_get_movies():
     """Route returns all movies or adds movie to database"""
     movies = get_movies()
+    if movies == []:
+        return {"error": True, "message": "Movies not found"}, 404
 
     return jsonify(movies), 200
 
