@@ -22,7 +22,7 @@ def get_movies(search: str = None, sort_by: str = None,) -> list[dict]:
         query += " WHERE title ILIKE %s"
 
     if sort_by:
-        query += " ORDER BY " + sort_by + " "
+        query += " ORDER BY " + sort_by + " DESC "
 
     curs.execute(query, (search,))
     data = curs.fetchall()
