@@ -10,6 +10,14 @@ def get_connection() -> connection:
         "dbname=movies user=joel host=localhost")
 
 
+def validate_sort_by(sort_by: str) -> bool:
+    """Checks if we are sorting by a valid parameter"""
+    if sort_by and sort_by not in ["title", "release_date", "genre", "revenue", "budget", "score"]:
+        return False
+
+    return True
+
+
 def get_movies(search: str = None, sort_by: str = None, sort_order: str = None) -> list[dict]:
     """Gets all movies from table"""
     conn = get_connection()
