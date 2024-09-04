@@ -48,7 +48,7 @@ def test_get_movies_empty(mock_get_movies, client):
 
 
 @patch('api.get_movies')
-def test_get_movies_with_search(mock_get_movies, client):
+def test_get_movies_with_search_success(mock_get_movies, client):
     """Test /movies GET route with a search term."""
     mock_movies = [
         {"movie_id": 3, "title": "Test Movie", "release_date": "2024-01-01"}
@@ -60,3 +60,15 @@ def test_get_movies_with_search(mock_get_movies, client):
     assert response.status_code == 200
     assert response.json == mock_movies
     mock_get_movies.assert_called_once_with("Test")
+
+
+@patch('api.get_movies')
+def test_get_movies_with_search_failure(mock_get_movies, client):
+    """Test /movies GET route with a search term."""
+    mock_get_movies.return_value = []
+
+    response = client.get("/movies?search=Invalid")
+
+    assert response.status_code == 404
+    assert response.json == {"error": True, "message": "Movies not found"}
+    mock_get_movies.assert_called_once_with("Invalid")
