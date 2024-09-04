@@ -18,8 +18,9 @@ def endpoint_get_movies():
     # Adding parameter's to movies route
     search = request.args.get("search")
     sort_by = request.args.get("sort_by")
+    sort_order = request.args.get("sort_order")
 
-    movies = get_movies(search, sort_by)
+    movies = get_movies(search, sort_by, sort_order)
     if movies == []:
         return {"error": True, "message": "Movies not found"}, 404
 

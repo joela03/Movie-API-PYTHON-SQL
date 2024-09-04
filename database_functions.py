@@ -10,7 +10,7 @@ def get_connection() -> connection:
         "dbname=movies user=joel host=localhost")
 
 
-def get_movies(search: str = None, sort_by: str = None,) -> list[dict]:
+def get_movies(search: str = None, sort_by: str = None, sort_order: str = None,) -> list[dict]:
     """Gets all movies from table"""
     conn = get_connection()
     curs = get_cursor(conn)
@@ -22,7 +22,10 @@ def get_movies(search: str = None, sort_by: str = None,) -> list[dict]:
         query += " WHERE title ILIKE %s"
 
     if sort_by:
-        query += " ORDER BY " + sort_by + " DESC "
+        query += " ORDER BY " + sort_by
+        if sort_order:
+            if sort_order == "ascending":
+                query += sort_order
 
     curs.execute(query, (search,))
     data = curs.fetchall()
