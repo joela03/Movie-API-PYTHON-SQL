@@ -66,5 +66,29 @@ def get_country_key(country_code: str) -> int:
     return 61
 
 
+def import_movies_to_database(movies_list: list[dict]) -> None:
+    """Import movies to database"""
+    curs = get_cursor(conn)
+    for row in movies_list:
+        genre_list = row.get('genre').split(', ')
+        language_key = get_language_key(row.get('orig_lang', 'No language'))
+        country_key = get_country_key(row.get('country'))
+        curs.execute("""INSERT INTO movie(title, release_date, score,
+                     overview, orig_title, orig_lang, budget, revenue,
+                     country)
+                     VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                     RETURNING movie_id""")
+        movie_id = curs.fetchone().get('movie_id')
+        conn.commit()
+
+        for genre in genre_list:
+            genre_id = get_genre_key(genre)
+            curs.execute("""INSERT INTO movie_genres(movie_id, genre_id)
+                         VALUES (%s, %s);"""
+                         (movie_id, genre_id))
+            conn.commit()
+
+
 if __name__ == "__main__":
     movies = load_to_csv("imdb_movies.csv")
+    import_movies_to_database(movies)
