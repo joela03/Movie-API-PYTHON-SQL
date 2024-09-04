@@ -1,4 +1,4 @@
-"""The purpose of this script is to create function's that load the csv into our psql movies database"""
+"""Script of function's that load the csv into our psql movies database"""
 
 import csv
 import psycopg2
@@ -15,6 +15,7 @@ def get_cursor(connection: psycopg2.extensions.connection) -> psycopg2.extension
 
 
 def load_to_csv(filename: str) -> list[dict]:
+    """Load's csv file to a list of dictionaries"""
     with open(filename, encoding="utf-8") as f:
         data = []
         for line in csv.DictReader(f):
