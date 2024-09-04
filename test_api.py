@@ -33,3 +33,15 @@ def test_get_movies_success(mock_get_movies, client):
     assert response.status_code == 200
     assert response.json == mock_movies
     mock_get_movies.assert_called_once()
+
+
+@patch('api.get_movies')
+def test_get_movies_empty(mock_get_movies, client):
+    """Test the /movies GET route with an empty movie list."""
+    mock_get_movies.return_value = []
+
+    response = client.get("/movies")
+
+    assert response.status_code == 404
+    assert response.json == {"error": True, "message": "Movies not found"}
+    mock_get_movies.assert_called_once()
