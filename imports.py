@@ -87,7 +87,7 @@ def import_movies_to_database(movies_list: list[dict]) -> None:
         for genre in genre_list:
             genre_id = get_genre_key(genre)
             curs.execute("""INSERT INTO movie_genres(movie_id, genre_id)
-                         VALUES (%s, %s);"""
+                         VALUES (%s, %s);""",
                          (movie_id, genre_id))
             conn.commit()
 
