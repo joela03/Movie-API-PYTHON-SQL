@@ -1,3 +1,4 @@
+from unittest.mock import patch
 import pytest
 from flask import Flask
 from api import app
@@ -72,3 +73,68 @@ def test_get_movies_with_search_failure(mock_get_movies, client):
     assert response.status_code == 404
     assert response.json == {"error": True, "message": "Movies not found"}
     mock_get_movies.assert_called_once()
+
+
+@pytest.mark.parametrize("sort_by,sort_order,expected_order", [
+    ("names", "asc", ["Inception", "Interstellar"]),
+    ("names", "desc", ["Interstellar", "Inception"]),
+    ("date_x", "asc", ["Inception", "Interstellar"]),
+    ("date_x", "desc", ["Interstellar", "Inception"]),
+    ("genre", "asc", ["Adventure, Drama, Science Fiction", "Science Fiction"]),
+    ("genre", "desc", ["Science Fiction",
+     "Adventure, Drama, Science Fiction"]),
+    ("revenue", "asc", ["Interstellar", "Inception"]),
+    ("revenue", "desc", ["Inception", "Interstellar"]),
+    ("budget_x", "asc", ["Inception", "Interstellar"]),
+    ("budget_x", "desc", ["Interstellar", "Inception"]),
+    ("score", "asc", ["Interstellar", "Inception"]),
+    ("score", "desc", ["Inception", "Interstellar"]),
+])
+@patch('api.get_movies')
+def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expected_order):
+    movie_1 = {
+        "names": "Inception",
+        "date_x": "2010-07-16",
+        "score": 8.8,
+        "genre": "Science Fiction",
+        "overview": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.",
+        "orig_title": "Inception",
+        "status": "Released",
+        "orig_lang": "English",
+        "budget_x": 160000000,
+        "revenue": 829895144,
+        "country": "USA"
+    }
+    movie_2 = {
+        "names": "Interstellar",
+        "date_x": "2014-11-07",
+        "score": 8.6,
+        "genre": "Adventure, Drama, Science Fiction",
+        "overview": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+        "orig_title": "Interstellar",
+        "status": "Released",
+        "orig_lang": "English",
+        "budget_x": 165000000,
+        "revenue": 677471339,
+        "country": "USA"
+    }
+
+    mock_movies = [movie_1, movie_2]
+    mock_get_movies.return_value = mock_movies
+
+    response = client.get(f'/movies?sort_by={sort_by}&sort_order={sort_order}')
+    assert response.status_code == 200
+    movies = response.get_json()
+
+    field_map = {
+        "names": "names",
+        "date_x": "date_x",
+        "genre": "genre",
+        "revenue": "revenue",
+        "budget_x": "budget_x",
+        "score": "score"
+    }
+
+    sorted_field = [movie[field_map[sort_by]] for movie in movies]
+
+    assert sorted_field == expected_order
