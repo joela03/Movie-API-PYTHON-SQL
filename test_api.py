@@ -119,7 +119,24 @@ def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expecte
     }
 
     mock_movies = [movie_1, movie_2]
-    mock_get_movies.return_value = mock_movies
+
+    def get_sorted_movies(sort_by, sort_order):
+        if sort_by == "names":
+            return mock_movies if sort_order == "asc" else mock_movies[::-1]
+        if sort_by == "date_x":
+            return [movie_1, movie_2] if sort_order == "asc" else [movie_2, movie_1]
+        if sort_by == "genre":
+            return [movie_2, movie_1] if sort_order == "asc" else [movie_1, movie_2]
+        if sort_by == "revenue":
+            return [movie_2, movie_1] if sort_order == "asc" else [movie_1, movie_2]
+        if sort_by == "budget_x":
+            return [movie_1, movie_2] if sort_order == "asc" else [movie_2, movie_1]
+        if sort_by == "score":
+            return [movie_2, movie_1] if sort_order == "asc" else [movie_1, movie_2]
+        return mock_movies
+
+    mock_get_movies.side_effect = lambda search, sort_by, sort_order: get_sorted_movies(
+        sort_by, sort_order)
 
     response = client.get(f'/movies?sort_by={sort_by}&sort_order={sort_order}')
     assert response.status_code == 200
