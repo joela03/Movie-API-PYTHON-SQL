@@ -73,6 +73,8 @@ def import_movies_to_database(movies_list: list[dict]) -> None:
         genre_list = row.get('genre').split(', ')
         language_key = get_language_key(row.get('orig_lang', 'No language'))
         country_key = get_country_key(row.get('country'))
+
+        # Insert movie details into the movie table
         curs.execute("""INSERT INTO movie(title, release_date, score,
                      overview, orig_title, orig_lang, budget, revenue,
                      country_id)
@@ -84,6 +86,7 @@ def import_movies_to_database(movies_list: list[dict]) -> None:
         movie_id = curs.fetchone().get('movie_id')
         conn.commit()
 
+        # Insert genres into the movie_genres table
         for genre in genre_list:
             genre_id = get_genre_key(genre)
             curs.execute("""INSERT INTO movie_genres(movie_id, genre_id)
