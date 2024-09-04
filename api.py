@@ -1,6 +1,7 @@
 """API that connects to a movie_database"""
 
 from flask import Flask, jsonify
+from database_functions import get_movies
 
 app = Flask(__name__)
 
@@ -14,7 +15,9 @@ def endpoint_index():
 @app.route("/movies", methods=["GET"])
 def endpoint_get_movies():
     """Route returns all movies or adds movie to database"""
-    ...
+    movies = get_movies()
+
+    return jsonify(movies), 200
 
 
 if __name__ == "__main__":
