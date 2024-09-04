@@ -18,6 +18,14 @@ def validate_sort_by(sort_by: str) -> bool:
     return True
 
 
+def validate_sort_order(sort_order: str) -> bool:
+    """Checks if we are ordering by a valid parameter"""
+    if sort_order and sort_order not in ["asc", "desc"]:
+        return False
+
+    return True
+
+
 def get_movies(search: str = None, sort_by: str = None, sort_order: str = None) -> list[dict]:
     """Gets all movies from table"""
     conn = get_connection()
