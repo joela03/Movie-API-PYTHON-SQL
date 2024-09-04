@@ -32,7 +32,7 @@ def get_genre_key(genre: str) -> int:
     data = curs.fetchone()
     curs.close()
     if data:
-        return data["id"]
+        return data["genre_id"]
 
     return 20
 
@@ -48,7 +48,7 @@ def get_language_key(language: str) -> int:
     data = curs.fetchone()
     curs.close()
     if data:
-        return data.get("id")
+        return data["language_id"]
     return 32
 
 
@@ -62,7 +62,7 @@ def get_country_key(country_code: str) -> int:
     data = curs.fetchone()
     curs.close()
     if data:
-        return data["id"]
+        return data["country_id"]
     return 61
 
 
