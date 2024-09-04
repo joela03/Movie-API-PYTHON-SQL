@@ -75,14 +75,13 @@ def test_get_movies_with_search_failure(mock_get_movies, client):
     mock_get_movies.assert_called_once()
 
 
-@pytest.mark.parametrize("sort_by,sort_order,expected_order", [
+@pytest.mark.parametrize("sort_by,sort_order,expected_movies", [
     ("names", "asc", ["Inception", "Interstellar"]),
     ("names", "desc", ["Interstellar", "Inception"]),
     ("date_x", "asc", ["Inception", "Interstellar"]),
     ("date_x", "desc", ["Interstellar", "Inception"]),
-    ("genre", "asc", ["Adventure, Drama, Science Fiction", "Science Fiction"]),
-    ("genre", "desc", ["Science Fiction",
-     "Adventure, Drama, Science Fiction"]),
+    ("genre", "asc", ["Interstellar", "Inception"]),
+    ("genre", "desc", ["Inception", "Interstellar"]),
     ("revenue", "asc", ["Interstellar", "Inception"]),
     ("revenue", "desc", ["Inception", "Interstellar"]),
     ("budget_x", "asc", ["Inception", "Interstellar"]),
@@ -91,7 +90,7 @@ def test_get_movies_with_search_failure(mock_get_movies, client):
     ("score", "desc", ["Inception", "Interstellar"]),
 ])
 @patch('api.get_movies')
-def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expected_order):
+def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expected_movies):
     movie_1 = {
         "names": "Inception",
         "date_x": "2010-07-16",
@@ -126,15 +125,6 @@ def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expecte
     assert response.status_code == 200
     movies = response.get_json()
 
-    field_map = {
-        "names": "names",
-        "date_x": "date_x",
-        "genre": "genre",
-        "revenue": "revenue",
-        "budget_x": "budget_x",
-        "score": "score"
-    }
+    returned_movie_titles = [movie["names"] for movie in movies]
 
-    sorted_field = [movie[field_map[sort_by]] for movie in movies]
-
-    assert sorted_field == expected_order
+    assert returned_movie_titles == expected_movies
