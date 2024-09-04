@@ -77,7 +77,10 @@ def import_movies_to_database(movies_list: list[dict]) -> None:
                      overview, orig_title, orig_lang, budget, revenue,
                      country)
                      VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                     RETURNING movie_id""")
+                     RETURNING movie_id;""",
+                     (row['names'], row['date_x'].strip(), row['score'],
+                      row['overview'], row['orig_title'], language_key,
+                      row['budget_x'], row['revenue'], country_key))
         movie_id = curs.fetchone().get('movie_id')
         conn.commit()
 
