@@ -25,7 +25,7 @@ def load_to_csv(filename: str) -> list[dict]:
 def get_genre_key(genre: str) -> int:
     """Gets genre key"""
     curs = get_cursor(conn)
-    curs.execute("""SELECT id
+    curs.execute("""SELECT genre_id
                    FROM genre
                    WHERE genre_name LIKE %s;""",
                  (genre,))
@@ -40,7 +40,7 @@ def get_genre_key(genre: str) -> int:
 def get_language_key(language: str) -> int:
     """Gets language key"""
     curs = get_cursor(conn)
-    curs.execute("""SELECT id
+    curs.execute("""SELECT language_id
                    FROM languages
                    WHERE language_name LIKE %s
                  ;""",
@@ -55,7 +55,7 @@ def get_language_key(language: str) -> int:
 def get_country_key(country_code: str) -> int:
     """"Gets country key"""
     curs = get_cursor(conn)
-    curs.execute("""SELECT id
+    curs.execute("""SELECT country_id
                    FROM country
                    WHERE country_name LIKE %s;""",
                  (country_code,))
