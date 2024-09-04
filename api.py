@@ -15,10 +15,11 @@ def endpoint_index():
 @app.route("/movies", methods=["GET"])
 def endpoint_get_movies():
     """Route returns all movies or adds movie to database"""
-    # Adding search parameter to movies route
+    # Adding parameter's to movies route
     search = request.args.get("search")
+    sort_by = request.args.get("sort_by")
 
-    movies = get_movies(search)
+    movies = get_movies(search, sort_by)
     if movies == []:
         return {"error": True, "message": "Movies not found"}, 404
 
