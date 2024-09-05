@@ -104,3 +104,16 @@ def get_movies_by_genre(genre_id: int) -> list[dict]:
     curs.close()
 
     return data
+
+
+def get_genres() -> list[dict[str, str]]:
+    """Gets all possible genre of movies"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    curs.execute("SELECT genre_name FROM genre;")
+
+    data = curs.fetchall()
+    curs.close()
+
+    return data
