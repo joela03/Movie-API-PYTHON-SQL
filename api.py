@@ -29,7 +29,7 @@ def endpoint_get_movies():
 
         movies = get_movies(search, sort_by, sort_order)
         if movies == []:
-            return {"error": True, "message": "Movies not found"}, 404
+            return {"error": "Movies not found"}, 404
 
         return jsonify(movies), 200
     else:
@@ -48,6 +48,9 @@ def endpoint_get_movies():
             return jsonify({"error": """Missing required fields, ensure data has
                             the following columns: title, release_date, score, overview,
                             orig_title, orig_lang, budget, revenue, country"""}), 400
+        except ValueError:
+            return jsonify("error": """Post request has invalid data types, ensure budget,
+                        revenue and score values are floats and the other values are strings""")
 
 
 if __name__ == "__main__":
