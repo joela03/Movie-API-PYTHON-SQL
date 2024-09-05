@@ -258,3 +258,15 @@ def test_delete_movie_success(mock_delete_movie, client):
 
     assert response.status_code == 200
     assert response.get_json() == {"message": "Movie deleted"}
+
+
+@patch('api.delete_movie')
+def test_delete_movie_failure(mock_delete_movie, client):
+    """Test case for failing to delete a movie."""
+    mock_delete_movie.return_value = False
+
+    movie_id = 2
+    response = client.delete(f"/movies/{movie_id}")
+
+    assert response.status_code == 404
+    assert response.get_json() == {"error": "Movie could not be deleted"}
