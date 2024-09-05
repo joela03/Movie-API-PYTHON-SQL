@@ -1,9 +1,6 @@
 from unittest.mock import patch
 import pytest
-from flask import Flask
 from api import app
-from unittest.mock import patch, MagicMock
-from database_functions import get_movies
 
 
 @pytest.fixture
@@ -91,6 +88,7 @@ def test_get_movies_with_search_failure(mock_get_movies, client):
 ])
 @patch('api.get_movies')
 def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expected_movies):
+    """Tests that movies are sorted correctly"""
     movie_1 = {
         "title": "Inception",
         "release_date": "2010-07-16",
@@ -147,6 +145,7 @@ def test_movies_sort_order(mock_get_movies, client, sort_by, sort_order, expecte
 
 @patch('api.get_movies')
 def test_endpoint_invalid_sort_by(mock_get_movies, client):
+    """Test's that it returns error if invalid parameter is passed through"""
     mock_get_movies.return_value = []
 
     response = client.get('/movies?sort_by=invalid_field')
@@ -163,6 +162,7 @@ def test_endpoint_invalid_sort_by(mock_get_movies, client):
     "country"
 ])
 def test_post_movie_missing_required_fields(client, missing_field):
+    """Test's that it ensures all fields are present when posting"""
     movie_data = {
         "title": "Inception",
         "release_date": "2010-07-16",
@@ -198,9 +198,10 @@ def test_post_movie_missing_required_fields(client, missing_field):
     ("country", 131415),
 ])
 def test_post_movie_invalid_data_types(client, field, invalid_value):
+    """Test's that route only accepts valid data types"""
     movie_data = {
         "title": "Inception",
-        "release_date": "2010-07-16",
+        "release_date": "07/16/2010",
         "score": 8.8,
         "orig_title": "Inception",
         "orig_lang": "English",
@@ -217,3 +218,31 @@ def test_post_movie_invalid_data_types(client, field, invalid_value):
     assert response.status_code == 400
     assert response.get_json() == {
         "error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}
+
+
+@pytest.mark.parametrize("data, expected_status_code, expected_response", [
+    (
+        {
+            "title": "Inception",
+            "release_date": "2010-07-16",
+            "score": 8.8,
+            "orig_title": "Inception",
+            "orig_lang": "English",
+            "overview": "A mind-bending thriller",
+            "budget": 160000000,
+            "revenue": 829895144,
+            "country": "USA"
+        },
+        201,
+        {"success": "mock_movie_data"}
+    )
+])
+@patch('api.add_movie')
+def test_post_movie_success(mock_add_movie, client, data, expected_status_code, expected_response):
+    """Test's that movie get's posted successfully"""
+    mock_add_movie.return_value = "mock_movie_data"
+
+    response = client.post("/movies", json=data)
+
+    assert response.status_code == expected_status_code
+    assert response.get_json() == expected_response

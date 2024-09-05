@@ -67,7 +67,7 @@ def add_movie(title: str, release_date: date, score: int,
 
     curs.execute("""INSERT INTO movie (title, release_date, score,
                 overview, orig_title, orig_lang, budget,
-                revenue, country)
+                revenue, country_id)
                  VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *;""",
                  (title, release_date, score, overview, orig_title,
                   language_key, budget, revenue, country_key))
@@ -81,7 +81,7 @@ def get_genre(genre_id: int) -> dict:
     """Gets genre name given the genre id"""
     conn = get_connection()
     curs = get_cursor(conn)
-    curs.execute("SELECT genre_name FROM genre WHERE id = %s;",
+    curs.execute("SELECT genre_name FROM genre WHERE genre_id = %s;",
                  (genre_id,))
     data = curs.fetchone()
     curs.close()
@@ -96,8 +96,8 @@ def get_movies_by_genre(genre_id: int) -> list[dict]:
     curs.execute("""SELECT m.title, g.genre_name
                 FROM movie as m
                 JOIN movie_genres as mg ON mg.movie_id = m.movie_id
-                JOIN genre as g ON mg.genre_id = g.id
-                WHERE g.id = %s;""",
+                JOIN genre as g ON mg.genre_id = g.genre_id
+                WHERE g.genre_id = %s;""",
                  (genre_id,))
     data = curs.fetchall()
     curs.close()
