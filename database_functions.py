@@ -117,3 +117,16 @@ def get_genres() -> list[dict[str, str]]:
     curs.close()
 
     return data
+
+
+def get_country_key(country_code: str) -> int:
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    curs.execute("""SELECT country_id from country where country_name ILIKE %s""",
+                 (country_code,))
+
+    data = curs.fetchone()
+    curs.close()
+
+    return data

@@ -101,6 +101,14 @@ def endpoint_get_genres():
     return jsonify(genres)
 
 
+@app.route("/countries/<string:country_code>", methods=["GET"])
+def endpoint_get_movies_by_country(country_code: str):
+    """Get a list of movie details by country. Results can be sorted 
+    by a specific field in ascending or descending order."""
+
+    country_id = get_country_key(country_code)
+
+
 if __name__ == "__main__":
     app.config['TESTING'] = True
     app.config['DEBUG'] = True
