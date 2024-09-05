@@ -248,28 +248,29 @@ def test_post_movie_success(mock_add_movie, client, data, expected_status_code, 
     assert response.get_json() == expected_response
 
 
-# @patch('api.delete_movie')
-# def test_delete_movie_success(mock_delete_movie, client):
-#     """Test that route successfully delete's a movie."""
-#     mock_delete_movie.return_value = True
+@patch('api.delete_movie')
+def test_delete_movie_success(mock_delete_movie, client):
+    """Test that route successfully delete's a movie."""
+    mock_delete_movie.return_value = True
 
-#     movie_id = 1
-#     response = client.delete(f"/movies/{movie_id}")
+    movie_id = 1
+    response = client.delete(f"/movies/{movie_id}")
 
-#     assert response.status_code == 200
-#     assert response.get_json() == {"message": "Movie deleted"}
+    assert response.status_code == 200
+    assert response.get_json() == {"message": "Movie deleted"}
 
 
-# @patch('api.delete_movie')
-# def test_delete_movie_failure(mock_delete_movie, client):
-#     """Test case for failing to delete a movie."""
-#     mock_delete_movie.return_value = False
+@patch('api.delete_movie')
+def test_delete_movie_failure(mock_delete_movie, client):
+    """Test case for failing to delete a movie."""
+    mock_delete_movie.return_value = False
 
-#     movie_id = 2
-#     response = client.delete(f"/movies/{movie_id}")
+    movie_id = 2
+    response = client.delete(f"/movies/{movie_id}")
 
-#     assert response.status_code == 404
-#     assert response.get_json() == {"error": "Movie could not be deleted"}
+    assert response.status_code == 404
+    assert response.get_json() == {"error": "Movie could not be deleted"}
+
 
 @patch('api.get_movie_by_id')
 def test_get_movie_by_id_success(mock_get_movie_by_id, client):

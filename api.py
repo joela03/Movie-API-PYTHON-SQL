@@ -92,7 +92,7 @@ def endpoint_movies_by_genre(genre_id: int):
     return jsonify(movies), 200
 
 
-@app.route("/movies/<int:movie_id>", methods=["GET", "DELETE"])
+@app.route("/movies/<int:movie_id>", methods=["GET", "DELETE", "PATCH"])
 def endpoint_get_movie(movie_id: int):
 
     if request.method == "GET":
@@ -103,13 +103,15 @@ def endpoint_get_movie(movie_id: int):
         else:
             return jsonify({"error": "Movie not found"}), 404
 
-    else:
+    elif request.method == "PATCH":
         success = delete_movie(movie_id)
 
         if not success:
             return jsonify({"error": "Movie could not be deleted"}), 404
 
         return jsonify({"message": "Movie deleted"}), 200
+
+    else:
 
 
 @app.route("/genres", methods=["GET"])
