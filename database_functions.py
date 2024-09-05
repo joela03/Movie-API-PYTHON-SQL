@@ -164,3 +164,18 @@ def get_movie_by_id(movie_id: int) -> list[dict]:
     curs.close()
 
     return data
+
+
+def delete_movie(movie_id: int) -> bool:
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    query = "DELETE FROM movie WHERE movie_id = %s;"
+
+    curs.execute(query, (movie_id,))
+
+    # Checks number of rows fetched(deleted) by the cursor
+    rows_deleted = curs.rowcount
+    conn.commit()
+
+    return rows_deleted > 0
