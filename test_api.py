@@ -224,7 +224,7 @@ def test_post_movie_invalid_data_types(client, field, invalid_value):
     (
         {
             "title": "Inception",
-            "release_date": "2010-07-16",
+            "release_date": "07/16/2010",
             "score": 8.8,
             "orig_title": "Inception",
             "orig_lang": "English",

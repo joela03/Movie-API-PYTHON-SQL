@@ -37,19 +37,25 @@ def endpoint_get_movies():
     else:
         try:
             data = request.json
-            title = str(data["title"])
-            release_date = str(data["release_date"])
-            score = float(data["score"])
-            orig_title = str(data["orig_title"])
-            orig_lang = str(data["orig_lang"])
-            overview = str(data["overview"])
-            budget = float(data["budget"])
-            revenue = float(data["revenue"])
-            country = str(data["country"])
+            title = data["title"]
+            release_date = data["release_date"]
+            score = data["score"]
+            orig_title = data["orig_title"]
+            orig_lang = data["orig_lang"]
+            overview = data["overview"]
+            budget = data["budget"]
+            revenue = data["revenue"]
+            country = data["country"]
         except KeyError:
             return jsonify({"error": "Missing required fields, ensure data has the following columns: title, release_date, score, overview, orig_title, orig_lang, budget, revenue, country"}), 400
-        except ValueError:
-            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
+        for i in [title, release_date, orig_title, overview, country]:
+            if not isinstance(i, str):
+                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
+        for i in [score, budget, revenue]:
+            if not isinstance(i, float):
+                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
 
         try:
             datetime.strptime(release_date, "%m/%d/%Y")
