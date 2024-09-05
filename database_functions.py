@@ -129,7 +129,7 @@ def get_country_key(country_code: str) -> int:
     data = curs.fetchone()
     curs.close()
 
-    return data
+    return data["country_id"]
 
 
 def get_movies_by_country(country_id: int):
@@ -137,6 +137,9 @@ def get_movies_by_country(country_id: int):
     conn = get_connection()
     curs = get_cursor(conn)
 
-    curs.execute("SELECT * FROM movie WHERE country_id = %s",
-                 (country_id))
+    query = "SELECT * FROM movie WHERE country_id = %s"
+    curs.execute(query, (country_id,))
+    data = curs.fetchall()
     curs.close()
+
+    return data
