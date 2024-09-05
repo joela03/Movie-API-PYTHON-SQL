@@ -44,13 +44,10 @@ def endpoint_get_movies():
             budget = float(data["budget"])
             revenue = float(data["revenue"])
             country = float(data["country"])
-        except KeyError:
-            return jsonify({"error": """Missing required fields, ensure data has
-                            the following columns: title, release_date, score, overview,
-                            orig_title, orig_lang, budget, revenue, country"""}), 400
         except ValueError:
-            return jsonify("error": """Post request has invalid data types, ensure budget,
-                        revenue and score values are floats and the other values are strings""")
+            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+        except KeyError:
+            return jsonify({"error": "Missing required fields, ensure data has the following columns: title, release_date, score, overview, orig_title, orig_lang, budget, revenue, country"}), 400
 
 
 if __name__ == "__main__":

@@ -44,7 +44,7 @@ def test_get_movies_empty(mock_get_movies, client):
     response = client.get("/movies")
 
     assert response.status_code == 404
-    assert response.json == {"error": True, "message": "Movies not found"}
+    assert response.json == {"error": "Movies not found"}
     mock_get_movies.assert_called_once()
 
 
@@ -71,7 +71,7 @@ def test_get_movies_with_search_failure(mock_get_movies, client):
     response = client.get("/movies?search=Invalid")
 
     assert response.status_code == 404
-    assert response.json == {"error": True, "message": "Movies not found"}
+    assert response.json == {"error": "Movies not found"}
     mock_get_movies.assert_called_once()
 
 
@@ -181,6 +181,39 @@ def test_post_movie_missing_required_fields(client, missing_field):
     response = client.post("/movies", json=movie_data)
 
     assert response.status_code == 400
-    assert response.get_json() == {"error": """Missing required fields, ensure data has
-                            the following columns: title, release_date, score, overview,
-                            orig_title, orig_lang, budget, revenue, country"""}
+    assert response.get_json() == {
+        "error": """Missing required fields, ensure data has the following columns: title, release_date, score, overview, orig_title, orig_lang, budget, revenue, country"""}
+
+
+@pytest.mark.parametrize("field, invalid_value", [
+    ("title", 123),
+    ("release_date", 20210101),
+    ("score", "high"),
+    ("orig_title", 456),
+
+    ("orig_lang", 789),
+    ("overview", 101112),
+    ("budget", "a lot"),
+    ("revenue", "lots"),
+    ("country", 131415),
+])
+def test_post_movie_invalid_data_types(client, field, invalid_value):
+    movie_data = {
+        "title": "Inception",
+        "release_date": "2010-07-16",
+        "score": 8.8,
+        "orig_title": "Inception",
+        "orig_lang": "English",
+        "overview": "A mind-bending thriller",
+        "budget": 160000000,
+        "revenue": 829895144,
+        "country": "USA"
+    }
+
+    movie_data[field] = invalid_value
+
+    response = client.post("/movies", json=movie_data)
+
+    assert response.status_code == 400
+    assert response.get_json() == {
+        "error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}
