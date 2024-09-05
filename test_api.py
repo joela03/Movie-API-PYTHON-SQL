@@ -229,8 +229,8 @@ def test_post_movie_invalid_data_types(client, field, invalid_value):
             "orig_title": "Inception",
             "orig_lang": "English",
             "overview": "A mind-bending thriller",
-            "budget": 160000000,
-            "revenue": 829895144,
+            "budget": 160000000.1,
+            "revenue": 829895144.1,
             "country": "USA"
         },
         201,
