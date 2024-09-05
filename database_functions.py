@@ -3,6 +3,7 @@ import psycopg2.extras
 from psycopg2.extensions import connection, cursor
 from imports import get_cursor
 from datetime import date
+from imports import get_country_key, get_language_key
 
 
 def get_connection() -> connection:
@@ -59,3 +60,18 @@ def add_movie(title: str, release_date: date, score: int,
     """Add's movie to table"""
     conn = get_connection()
     curs = get_cursor(conn)
+
+    # Converting language and country key to their ID's to fit schema
+    country_key = get_country_key(country)
+    language_key = get_language_key(orig_lang)
+
+    curs.execute("""INSERT INTO movie (title, release_date, score,
+                overview, orig_title, orig_lang, budget,
+                revenue, country)
+                 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING *;""",
+                 (title, release_date, score, overview, orig_title,
+                  language_key, budget, revenue, country_key))
+
+    data = curs.fetchall()
+    curs.close()
+    return data
