@@ -34,7 +34,7 @@ def endpoint_get_movies():
         return jsonify(movies), 200
     else:
         try:
-            data = request.json()
+            data = request.json
             title = data["title"]
             release_date = data["release_date"]
             score = data["score"]
