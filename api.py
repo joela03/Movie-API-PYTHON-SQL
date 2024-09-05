@@ -107,13 +107,16 @@ def endpoint_get_movies_by_country(country_code: str):
     """Get a list of movie details by country. Results can be sorted 
     by a specific field in ascending or descending order."""
 
+    sort_by = request.args.get("sort_by")
+    sort_order = request.args.get("sort_order")
+
     country_id = get_country_key(country_code)
     print(country_code)
     print(country_id)
     if not country_id:
         return jsonify({"error": "Unable to find country with given country code"}), 404
 
-    movies = get_movies_by_country(country_id)
+    movies = get_movies_by_country(country_id, sort_by, sort_order)
 
     return jsonify(movies), 200
 

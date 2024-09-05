@@ -132,12 +132,19 @@ def get_country_key(country_code: str) -> int:
     return data["country_id"]
 
 
-def get_movies_by_country(country_id: int):
+def get_movies_by_country(country_id: int, sort_by: str = None,
+                          sort_order: str = None) -> list[dict]:
     """Gets all movies from a given country"""
     conn = get_connection()
     curs = get_cursor(conn)
 
     query = "SELECT * FROM movie WHERE country_id = %s"
+
+    if sort_by:
+        query += " ORDER BY " + sort_by
+        if sort_order:
+            query += " " + sort_order
+
     curs.execute(query, (country_id,))
     data = curs.fetchall()
     curs.close()
