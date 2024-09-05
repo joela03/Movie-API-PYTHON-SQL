@@ -65,6 +65,11 @@ def endpoint_get_movies():
             return jsonify({"error": str(e)}), 500
 
 
+@app.route("/genres/<int:genre_id>/movies", methods=["GET"])
+def endpoint_movies_by_genre(genre_id: int):
+    """Get list of movie details by genre"""
+
+
 if __name__ == "__main__":
     app.config['TESTING'] = True
     app.config['DEBUG'] = True
