@@ -152,3 +152,35 @@ def test_endpoint_invalid_sort_by(mock_get_movies, client):
     response = client.get('/movies?sort_by=invalid_field')
     assert response.status_code == 400
     assert response.get_json() == {"error": "Invalid sort_by parameter"}
+
+
+@pytest.mark.parametrize("missing_field", [
+    "title",
+    "release_date",
+    "score",
+    "orig_title",
+    "orig_lang",
+    "country"
+])
+def test_post_movie_missing_required_fields(client, missing_field):
+    movie_data = {
+        "title": "Inception",
+        "release_date": "2010-07-16",
+        "score": 8.8,
+        "orig_title": "Inception",
+        "orig_lang": "English",
+        "overview": "A mind-bending thriller",
+        "budget": 160000000,
+        "revenue": 829895144,
+        "country": "USA"
+    }
+
+    movie_data.pop(missing_field)
+
+    response = client.post("/movies", json=movie_data)
+
+    assert response.status_code == 400
+    assert response.get_json() == {
+        "error": """Missing required fields, ensure data has
+        the following columns: title, release_date, score, overview,
+        orig_title, orig_lang, budget, revenue, country"""}
