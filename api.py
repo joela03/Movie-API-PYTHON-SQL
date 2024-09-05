@@ -43,7 +43,7 @@ def endpoint_get_movies():
             overview: str = data.get("overview", "")
             budget: int = data.get("budget", 0)
             revenue: int = data.get("revenue", 0)
-            country: str = data.get("country")
+            country = data["country"]
         except KeyError:
             return jsonify({"error": """Missing required fields, ensure data has
                             the following columns: title, release_date, score, overview,

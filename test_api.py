@@ -176,11 +176,11 @@ def test_post_movie_missing_required_fields(client, missing_field):
     }
 
     movie_data.pop(missing_field)
+    print(movie_data)
 
     response = client.post("/movies", json=movie_data)
 
     assert response.status_code == 400
-    assert response.get_json() == {
-        "error": """Missing required fields, ensure data has
-        the following columns: title, release_date, score, overview,
-        orig_title, orig_lang, budget, revenue, country"""}
+    assert response.get_json() == {"error": """Missing required fields, ensure data has
+                            the following columns: title, release_date, score, overview,
+                            orig_title, orig_lang, budget, revenue, country"""}
