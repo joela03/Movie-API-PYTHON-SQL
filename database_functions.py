@@ -150,3 +150,17 @@ def get_movies_by_country(country_id: int, sort_by: str = None,
     curs.close()
 
     return data
+
+
+def get_movie_by_id(movie_id: int) -> list[dict]:
+    """Gets a movie from it's id"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    query = "SELECT * FROM movie WHERE movie_id = %s"
+
+    curs.execute(query, (movie_id,))
+    data = curs.fetchone()
+    curs.close()
+
+    return data
