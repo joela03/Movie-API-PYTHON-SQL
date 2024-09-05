@@ -246,3 +246,15 @@ def test_post_movie_success(mock_add_movie, client, data, expected_status_code, 
 
     assert response.status_code == expected_status_code
     assert response.get_json() == expected_response
+
+
+@patch('api.delete_movie')
+def test_delete_movie_success(mock_delete_movie, client):
+    """Test that route successfully delete's a movie."""
+    mock_delete_movie.return_value = True
+
+    movie_id = 1
+    response = client.delete(f"/movies/{movie_id}")
+
+    assert response.status_code == 200
+    assert response.get_json() == {"message": "Movie deleted"}
