@@ -1,5 +1,6 @@
 """API that connects to a movie_database"""
 
+from datetime import datetime
 from flask import Flask, jsonify, request
 from database_functions import get_movies, validate_sort_by, validate_sort_order
 
@@ -28,6 +29,7 @@ def endpoint_get_movies():
             return jsonify({"error": "Invalid sort_order parameter"}), 400
 
         movies = get_movies(search, sort_by, sort_order)
+
         if movies == []:
             return {"error": "Movies not found"}, 404
 
@@ -48,6 +50,11 @@ def endpoint_get_movies():
             return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
         except KeyError:
             return jsonify({"error": "Missing required fields, ensure data has the following columns: title, release_date, score, overview, orig_title, orig_lang, budget, revenue, country"}), 400
+
+        try:
+            datetime.strptime(release_date, "%m/%d/%Y")
+        except ValueError:
+            return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
 
 
 if __name__ == "__main__":
