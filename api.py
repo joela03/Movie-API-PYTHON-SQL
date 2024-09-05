@@ -20,10 +20,10 @@ def endpoint_get_movies():
     sort_by = request.args.get("sort_by")
     sort_order = request.args.get("sort_order")
 
-    if sort_by and sort_by not in ["title", "release_date", "genre", "revenue", "budget", "score"]:
+    if not validate_sort_by(sort_by):
         return jsonify({"error": "Invalid sort_by parameter"}), 400
 
-    if sort_order and sort_order not in ["asc", "desc"]:
+    if not validate_sort_order(sort_order):
         return jsonify({"error": "Invalid sort_order parameter"}), 400
 
     movies = get_movies(search, sort_by, sort_order)
