@@ -75,3 +75,15 @@ def add_movie(title: str, release_date: date, score: int,
     data = curs.fetchall()
     curs.close()
     return data
+
+
+def get_genre(genre_id: int) -> dict:
+    """Gets genre name given the genre id"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+    curs.execute("SELECT genre_name FROM genre WHERE id = %s;",
+                 (genre_id,))
+    data = curs.fetchone()
+    curs.close()
+
+    return data
