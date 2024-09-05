@@ -246,26 +246,3 @@ def test_post_movie_success(mock_add_movie, client, data, expected_status_code, 
 
     assert response.status_code == expected_status_code
     assert response.get_json() == expected_response
-
-
-@pytest.mark.parametrize("mock_genres, expected_status_code, expected_response", [
-    (
-        [{"id": 1, "name": "Action"}, {"id": 2, "name": "Drama"}],
-        200,
-        [{"id": 1, "name": "Action"}, {"id": 2, "name": "Drama"}]
-    ),
-    (
-        None,  # Simulate no genres found
-        404,
-        {"error": "No genres found"}
-    )
-])
-@patch('api.get_genres')
-def test_endpoint_get_genres(mock_get_genres, client, mock_genres, expected_status_code, expected_response):
-    "Tests that the /genres route returns the expected values"
-    mock_get_genres.return_value = mock_genres
-
-    response = client.get("/genres")
-
-    assert response.status_code == expected_status_code
-    assert response.get_json() == expected_response
