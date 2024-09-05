@@ -95,6 +95,9 @@ def endpoint_get_genres():
     """Get a list of all genres"""
     genres = get_genres()
 
+    if not genres:
+        return jsonify({"error": "No genres found"}), 404
+
     return jsonify(genres)
 
 
