@@ -123,10 +123,20 @@ def get_country_key(country_code: str) -> int:
     conn = get_connection()
     curs = get_cursor(conn)
 
-    curs.execute("""SELECT country_id from country where country_name ILIKE %s""",
+    curs.execute("SELECT country_id from country where country_name ILIKE %s",
                  (country_code,))
 
     data = curs.fetchone()
     curs.close()
 
     return data
+
+
+def get_movies_by_country(country_id: int):
+    """Gets all movies from a given country"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    curs.execute("SELECT * FROM movie WHERE country_id = %s",
+                 (country_id))
+    curs.close()

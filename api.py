@@ -3,7 +3,8 @@
 from datetime import datetime
 from flask import Flask, jsonify, request
 from database_functions import (get_movies, validate_sort_by, validate_sort_order,
-                                add_movie, get_genre, get_movies_by_genre, get_genres)
+                                add_movie, get_genre, get_movies_by_genre, get_genres,
+                                get_country_key, get_movies_by_country)
 
 app = Flask(__name__)
 
@@ -107,6 +108,9 @@ def endpoint_get_movies_by_country(country_code: str):
     by a specific field in ascending or descending order."""
 
     country_id = get_country_key(country_code)
+    movies = get_movies_by_country(country_id)
+
+    return jsonify(movies), 200
 
 
 if __name__ == "__main__":
