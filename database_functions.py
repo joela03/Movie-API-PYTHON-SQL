@@ -2,6 +2,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import connection, cursor
 from imports import get_cursor
+from datetime import date
 
 
 def get_connection() -> connection:
@@ -50,3 +51,11 @@ def get_movies(search: str = None, sort_by: str = None, sort_order: str = None) 
     curs.close()
 
     return data
+
+
+def add_movie(title: str, release_date: date, score: int,
+              overview: str, orig_title: str, orig_lang: str,
+              budget: int, revenue: int, country: str) -> dict:
+    """Add's movie to table"""
+    conn = get_connection()
+    curs = get_cursor(conn)

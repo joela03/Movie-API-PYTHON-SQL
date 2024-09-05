@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from flask import Flask, jsonify, request
-from database_functions import get_movies, validate_sort_by, validate_sort_order
+from database_functions import get_movies, validate_sort_by, validate_sort_order, add_movie
 
 app = Flask(__name__)
 
@@ -55,6 +55,9 @@ def endpoint_get_movies():
             datetime.strptime(release_date, "%m/%d/%Y")
         except ValueError:
             return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
+
+        movie = add_movie(title, release_date, score, overview,
+                          orig_title, orig_lang, budget, revenue, country)
 
 
 if __name__ == "__main__":
