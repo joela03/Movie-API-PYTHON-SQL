@@ -112,6 +112,25 @@ def endpoint_get_movie(movie_id: int):
         return jsonify({"message": "Movie deleted"}), 200
 
     else:
+        data = request.json
+        title = data["title"]
+        release_date = data["release_date"]
+        score = data["score"]
+        overview = data["overview"]
+        orig_title = data["orig_title"]
+        orig_lang = data["orig_lang"]
+        budget = data["budget"]
+        revenue = data["revenue"]
+        country = data["country"]
+
+        try:
+            for param in [title, release_date, score,
+                          overview, orig_title, orig_lang,
+                          budget, revenue, country]:
+                if not param:
+                    raise Exception("Missing required values")
+        except:
+            ...
 
 
 @app.route("/genres", methods=["GET"])
