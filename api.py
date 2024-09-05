@@ -2,7 +2,8 @@
 
 from datetime import datetime
 from flask import Flask, jsonify, request
-from database_functions import get_movies, validate_sort_by, validate_sort_order, add_movie, get_genre, get_movies_by_genre
+from database_functions import (get_movies, validate_sort_by, validate_sort_order,
+                                add_movie, get_genre, get_movies_by_genre)
 
 app = Flask(__name__)
 
@@ -34,6 +35,7 @@ def endpoint_get_movies():
             return {"error": "Movies not found"}, 404
 
         return jsonify(movies), 200
+
     else:
         try:
             data = request.json

@@ -1,9 +1,10 @@
+"""Functions that query the database"""
+
+from datetime import date
 import psycopg2
 import psycopg2.extras
-from psycopg2.extensions import connection, cursor
-from imports import get_cursor
-from datetime import date
-from imports import get_country_key, get_language_key
+from psycopg2.extensions import connection
+from imports import get_cursor, get_country_key, get_language_key
 
 
 def get_connection() -> connection:
