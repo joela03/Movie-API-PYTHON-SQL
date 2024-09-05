@@ -33,7 +33,19 @@ def endpoint_get_movies():
 
         return jsonify(movies), 200
     else:
-        data = request.json()
+        try:
+            data = request.json()
+            title = data["title"]
+            release_date = data["release_date"]
+            score = data["score"]
+            orig_title = data["orig_title"]
+            orig_lang = data["orig_lang"]
+            overview: str = data.get("overview", "")
+            budget: int = data.get("budget", 0)
+            revenue: int = data.get("revenue", 0)
+            country: str = data.get("country")
+        except KeyError:
+            return jsonify({"error": "Missing required fields"}), 400
 
 
 if __name__ == "__main__":
