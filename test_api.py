@@ -292,3 +292,14 @@ def test_get_movie_by_id_success(mock_get_movie_by_id, client):
 
     assert response.status_code == 200
     assert response.get_json() == mock_movie
+
+
+@patch('api.get_movie_by_id')
+def test_get_movie_by_id_not_found(mock_get_movie_by_id, client):
+    """Test case for handling the movie not found scenario"""
+    mock_get_movie_by_id.return_value = None
+
+    response = client.get("/movies/9999")
+
+    assert response.status_code == 404
+    assert response.get_json() == {"error": "Movie not found"}
