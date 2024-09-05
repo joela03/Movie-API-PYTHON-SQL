@@ -87,3 +87,19 @@ def get_genre(genre_id: int) -> dict:
     curs.close()
 
     return data
+
+
+def get_movies_by_genre(genre_id: int) -> list[dict]:
+    """Gets movies by genre"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+    curs.execute("""SELECT m.title, g.genre_name
+                FROM movie as m
+                JOIN movie_genres as mg ON mg.movie_id = m.movie_id
+                JOIN genre as g ON mg.genre_id = g.id
+                WHERE g.id = %s;""",
+                 (genre_id,))
+    data = curs.fetchall()
+    curs.close()
+
+    return data
