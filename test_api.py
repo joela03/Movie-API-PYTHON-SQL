@@ -322,7 +322,7 @@ def create_movie(client):
     }
     response = client.post("/movies", json=movie_data)
     assert response.status_code == 201
-    return response.get_json()["success"][0]["id"]
+    return response.get_json()["success"]
 
 
 def test_patch_movie_success(client, create_movie):
@@ -337,7 +337,7 @@ def test_patch_movie_success(client, create_movie):
         "overview": "A mind-bending thriller",
         "budget": 160000000,
         "revenue": 829895144,
-        "country": "USA"
+        "country": "US"
     }
 
     response = client.patch(f"/movies/{movie_id}", json=update_data)
