@@ -306,6 +306,7 @@ def test_get_movie_by_id_not_found(mock_get_movie_by_id, client):
     assert response.get_json() == {"error": "Movie not found"}
 
 
+@pytest.fixture
 def create_movie(client):
     """Fixture to create a movie that can be updated."""
     movie_data = {
@@ -322,3 +323,29 @@ def create_movie(client):
     response = client.post("/movies", json=movie_data)
     assert response.status_code == 201
     return response.get_json()["success"][0]["id"]
+
+
+def test_patch_movie_success(client, create_movie):
+    """Test successful movie update using PATCH."""
+    movie_id = create_movie
+    update_data = {
+        "title": "Inception (Updated)",
+        "release_date": "07/16/2010",
+        "score": 9.0,
+        "orig_title": "Inception",
+        "orig_lang": "English",
+        "overview": "A mind-bending thriller",
+        "budget": 160000000,
+        "revenue": 829895144,
+        "country": "USA"
+    }
+
+    response = client.patch(f"/movies/{movie_id}", json=update_data)
+    assert response.status_code == 200
+    assert response.get_json()["success"] == True
+
+    response = client.get(f"/movies/{movie_id}")
+    assert response.status_code == 200
+    movie = response.get_json()
+    assert movie["title"] == "Inception (Updated)"
+    assert movie["score"] == 9.0
