@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from database_functions import (get_movies, validate_sort_by, validate_sort_order,
                                 add_movie, get_genre, get_movies_by_genre, get_genres,
                                 get_country_key, get_movies_by_country, get_movie_by_id,
-                                delete_movie, validate_data_types)
+                                delete_movie, validate_data_types, update_movie)
 
 app = Flask(__name__)
 
@@ -148,6 +148,11 @@ def endpoint_get_movie(movie_id: int):
             except ValueError:
                 return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
 
+             movie = update_movie(
+                title, release_date, score,
+                overview, orig_title, orig_lang,
+                budget, revenue, country)
+            return jsonify({'success': True, "movie": movie}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
