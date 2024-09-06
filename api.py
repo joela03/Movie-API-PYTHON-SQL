@@ -143,6 +143,11 @@ def endpoint_get_movie(movie_id: int):
             if not validate_data_types(float_params, float):
                 return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
 
+            try:
+                datetime.strptime(release_date, "%m/%d/%Y")
+            except ValueError:
+                return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
+
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
