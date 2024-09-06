@@ -152,6 +152,7 @@ def endpoint_get_movie(movie_id: int):
                 title, release_date, score,
                 overview, orig_title, orig_lang,
                 budget, revenue, country)
+
             if movie:
                 return jsonify({'success': True, "movie": movie}), 200
 

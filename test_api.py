@@ -304,3 +304,21 @@ def test_get_movie_by_id_not_found(mock_get_movie_by_id, client):
 
     assert response.status_code == 404
     assert response.get_json() == {"error": "Movie not found"}
+
+
+def create_movie(client):
+    """Fixture to create a movie that can be updated."""
+    movie_data = {
+        "title": "Inception",
+        "release_date": "07/16/2010",
+        "score": 8.8,
+        "orig_title": "Inception",
+        "orig_lang": "English",
+        "overview": "A mind-bending thriller",
+        "budget": 160000000,
+        "revenue": 829895144,
+        "country": "USA"
+    }
+    response = client.post("/movies", json=movie_data)
+    assert response.status_code == 201
+    return response.get_json()["success"][0]["id"]
