@@ -132,8 +132,8 @@ def endpoint_get_movie(movie_id: int):
                           budget, revenue, country]:
                 if not param:
                     raise Exception("Missing required values")
-        except:
-            ...
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
 
 @app.route("/genres", methods=["GET"])
