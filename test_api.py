@@ -318,7 +318,7 @@ def create_movie(client):
         "overview": "A mind-bending thriller",
         "budget": 160000000,
         "revenue": 829895144,
-        "country": "USA"
+        "country": "US"
     }
     response = client.post("/movies", json=movie_data)
     assert response.status_code == 201
