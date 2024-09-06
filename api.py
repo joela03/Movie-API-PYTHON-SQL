@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from database_functions import (get_movies, validate_sort_by, validate_sort_order,
                                 add_movie, get_genre, get_movies_by_genre, get_genres,
                                 get_country_key, get_movies_by_country, get_movie_by_id,
-                                delete_movie)
+                                delete_movie, validate_data_types)
 
 app = Flask(__name__)
 
@@ -56,13 +56,15 @@ def endpoint_get_movies():
         except ValueError:
             return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
 
-        for i in [title, release_date, orig_title, orig_lang, overview, country]:
-            if not isinstance(i, str):
-                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+        str_params = [title, release_date, orig_title,
+                      orig_lang, overview, country]
+        float_params = [score, budget, revenue]
 
-        for i in [score, budget, revenue]:
-            if not isinstance(i, float):
-                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+        if not validate_data_types(str_params, str):
+            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
+        if not validate_data_types(float_params, float):
+            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
 
         try:
             datetime.strptime(release_date, "%m/%d/%Y")
