@@ -47,7 +47,6 @@ def get_movies(search: str = None, sort_by: str = None, sort_order: str = None) 
         if sort_order:
             query += " " + sort_order
 
-    print(query)
     curs.execute(query, tuple(params) if params else None)
     data = curs.fetchall()
     curs.close()
@@ -187,3 +186,27 @@ def validate_data_types(items, data_type):
         if not isinstance(item, data_type):
             return False
     return True
+
+
+def update_movie(title: str, release_date: date, score: float,
+                 overview: str, orig_title: str, orig_lang: str,
+                 budget: int, revenue: int, country: str) -> dict[str]:
+    """Updates movie in database"""
+    conn = get_connection()
+    curs = get_cursor(conn)
+
+    country_key = get_country_key(country)
+    language_key = get_language_key(orig_lang)
+
+    query = """UPDATE movie SET title = %s, release_date = %s, score = %s,
+                            overview = %s, orig_title = %s, orig_lang = %s,
+                            budget = %s, revenue = %s, country = %s;"""
+
+    curs.execute(query, ((title, release_date, score,
+                          overview, orig_title, language_key,
+                          budget, revenue, country_key,)))
+
+    rows_updated = curs.rowcount
+    conn.commit()
+
+    return rows_updated > 0
