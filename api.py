@@ -132,6 +132,17 @@ def endpoint_get_movie(movie_id: int):
                           budget, revenue, country]:
                 if not param:
                     raise Exception("Missing required values")
+
+            str_params = [title, release_date, orig_title,
+                          orig_lang, overview, country]
+            float_params = [score, budget, revenue]
+
+            if not validate_data_types(str_params, str):
+                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
+            if not validate_data_types(float_params, float):
+                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
