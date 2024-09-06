@@ -148,11 +148,13 @@ def endpoint_get_movie(movie_id: int):
             except ValueError:
                 return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
 
-             movie = update_movie(
+            movie = update_movie(
                 title, release_date, score,
                 overview, orig_title, orig_lang,
                 budget, revenue, country)
-            return jsonify({'success': True, "movie": movie}), 200
+            if movie:
+                return jsonify({'success': True, "movie": movie}), 200
+
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
