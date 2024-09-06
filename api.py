@@ -118,46 +118,42 @@ def endpoint_get_movie(movie_id: int):
         data = request.json
         title = data["title"]
         release_date = data["release_date"]
-        score = data["score"]
+        score = float(data["score"])
         overview = data["overview"]
         orig_title = data["orig_title"]
         orig_lang = data["orig_lang"]
-        budget = data["budget"]
-        revenue = data["revenue"]
+        budget = float(data["budget"])
+        revenue = float(data["revenue"])
         country = data["country"]
 
+        for param in [title, release_date, score,
+                      overview, orig_title, orig_lang,
+                      budget, revenue, country]:
+            if not param:
+                raise Exception("Missing required values")
+
+        str_params = [title, release_date, orig_title,
+                      orig_lang, overview, country]
+        float_params = [score, budget, revenue]
+
+        if not validate_data_types(str_params, str):
+            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
+        if not validate_data_types(float_params, float):
+            return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
+
         try:
-            for param in [title, release_date, score,
-                          overview, orig_title, orig_lang,
-                          budget, revenue, country]:
-                if not param:
-                    raise Exception("Missing required values")
+            datetime.strptime(release_date, "%m/%d/%Y")
+        except ValueError:
+            return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
 
-            str_params = [title, release_date, orig_title,
-                          orig_lang, overview, country]
-            float_params = [score, budget, revenue]
+        movie = update_movie(
+            title, release_date, score,
+            overview, orig_title, orig_lang,
+            budget, revenue, country)
 
-            if not validate_data_types(str_params, str):
-                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
-
-            if not validate_data_types(float_params, float):
-                return jsonify({"error": "Post request has invalid data types, ensure budget,revenue and score values are floats and the other values are strings"}), 400
-
-            try:
-                datetime.strptime(release_date, "%m/%d/%Y")
-            except ValueError:
-                return jsonify({"error": "Invalid release_date format. Please use MM/DD/YYYY"}), 400
-
-            movie = update_movie(
-                title, release_date, score,
-                overview, orig_title, orig_lang,
-                budget, revenue, country)
-
-            if movie:
-                return jsonify({'success': True, "movie": movie}), 200
-
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
+        if movie:
+            return jsonify({'success': True}), 201
 
 
 @app.route("/genres", methods=["GET"])

@@ -198,15 +198,14 @@ def update_movie(title: str, release_date: date, score: float,
     country_key = get_country_key(country)
     language_key = get_language_key(orig_lang)
 
-    query = """UPDATE movie SET title = %s, release_date = %s, score = %s,
-                            overview = %s, orig_title = %s, orig_lang = %s,
-                            budget = %s, revenue = %s, country = %s;"""
-
-    curs.execute(query, ((title, release_date, score,
-                          overview, orig_title, language_key,
-                          budget, revenue, country_key,)))
+    curs.execute("""UPDATE movie SET title = %s, release_date = %s, score = %s,
+                        overview = %s, orig_title = %s, orig_lang = %s,
+                        budget = %s, revenue = %s, country_id = %s;""",
+                 (title, release_date, score, overview, orig_title,
+                  language_key, budget, revenue, country_key))
 
     rows_updated = curs.rowcount
     conn.commit()
+    curs.close()
 
     return rows_updated > 0
