@@ -106,7 +106,7 @@ def endpoint_get_movie(movie_id: int):
         else:
             return jsonify({"error": "Movie not found"}), 404
 
-    elif request.method == "PATCH":
+    elif request.method == "DELETE":
         success = delete_movie(movie_id)
 
         if not success:
