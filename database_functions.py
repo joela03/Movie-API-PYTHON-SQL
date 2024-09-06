@@ -179,3 +179,11 @@ def delete_movie(movie_id: int) -> bool:
     conn.commit()
 
     return rows_deleted > 0
+
+
+def validate_data_types(items, data_type):
+    """Validate that all items in the list are of the given data type."""
+    for item in items:
+        if not isinstance(item, data_type):
+            return False
+    return True
