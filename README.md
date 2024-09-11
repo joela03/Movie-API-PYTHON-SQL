@@ -1,4 +1,6 @@
-Movie API Python & SQL
+# Movie API Python & SQL
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Python-based API that interacts with a SQL database to retrieve and manage movie data. This project provides a RESTful API for managing a movie collection, allowing users to perform CRUD (Create, Read, Update, Delete) operations.
 
@@ -87,11 +89,6 @@ POST	/movies	      Add a new movie
 PUT	    /movies/<id>  Update an existing movie
 DELETE	/movies/<id>  Delete a movie
 
-Testing
-To run the tests, use the following command:
-pytest test_api.py
-You can also use Postman to manually test the API endpoints.
-
 ## Database Schema
 
 The movie database schema includes the following tables:
@@ -103,3 +100,21 @@ Movie_Genres: Associates a movie to multiple genre's
 
 To make the table's inside your database use the command:
 *psql -U "your user name" -d "your database name" -f schema.sql*
+
+## Testing
+To run the tests, use the following command:
+*pytest test_api.py*
+You can also use Postman to manually test the API endpoints.
+
+## Contributing
+We welcome contributions to improve the Movie API! If you have any ideas or find any bugs, feel free to open an issue or submit a pull request.
+
+To Contribute:
+- Fork the repository.
+- Create a new branch (git checkout -b feature-branch).
+- Make your changes and commit (git commit -m 'Add new feature').
+- Push to the branch (git push origin feature-branch).
+- Open a Pull Request.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
