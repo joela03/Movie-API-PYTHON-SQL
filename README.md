@@ -41,3 +41,13 @@ To run this project locally, follow these steps:
 - PostgreSQL installed and running
 - `pip` for managing Python packages
 - `virtualenv` (optional but recommended for environment management)
+
+API Endpoints
+Here is a summary of the main API endpoints:
+
+Method	Endpoint	  Description
+GET	    /movies	      Retrieve all movies
+GET	    /movies/<id>  Retrieve a specific movie
+POST	/movies	      Add a new movie
+PUT	    /movies/<id>  Update an existing movie
+DELETE	/movies/<id>  Delete a movie .
