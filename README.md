@@ -16,7 +16,17 @@ A Python-based API that interacts with a SQL database to retrieve and manage mov
 - [License](#license)
 
 ## Project Overview
-The **Movie API** is a simple RESTful API built with Python and PostgreSQL that allows users to manage a movie database. Users can add, update, delete, and retrieve movies and related information such as movie title, genre, and ratings. This project is an excellent example of how Python can be used to build a backend API while leveraging a relational database to store and query data.
+The **Movie API** is designed to showcase strong SQL and data management skills through the use of PostgreSQL as the primary database. This project provides a RESTful API that allows users to perform various operations on movie data, with a heavy emphasis on database interactions.
+
+The main purpose of this project is to demonstrate efficient database querying, schema design, and data manipulation using SQL. It involves complex SQL operations such as joins, filtering, and aggregations, which are essential for data analytics and business intelligence.
+
+This project highlights:
+- **SQL Optimization**: Efficiently designed queries for retrieving movie data, including sorting, filtering, and aggregations.
+- **Data Management**: Using SQL to handle CRUD (Create, Read, Update, Delete) operations on the movie dataset.
+- **Schema Design**: An optimized relational database schema for storing movie details and user ratings, ensuring normalization and integrity.
+- **PostgreSQL Functions and Indexing**: Use of SQL functions and indexing to improve performance, especially for large datasets.
+
+Whether you're interested in data analysis, data science, or backend development, this project showcases practical SQL skills that are critical for managing and analyzing data.
 
 ## Features
 - Add new movies with details (title, genre, release date, etc.).
@@ -50,4 +60,9 @@ GET	    /movies	      Retrieve all movies
 GET	    /movies/<id>  Retrieve a specific movie
 POST	/movies	      Add a new movie
 PUT	    /movies/<id>  Update an existing movie
-DELETE	/movies/<id>  Delete a movie .
+DELETE	/movies/<id>  Delete a movie
+
+Testing
+To run the tests, use the following command:
+pytest test_api.py
+You can also use Postman to manually test the API endpoints.
