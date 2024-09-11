@@ -341,7 +341,7 @@ def test_patch_movie_success(client, create_movie):
     }
 
     response = client.patch(f"/movies/{movie_id}", json=update_data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.get_json()["success"] == True
 
     response = client.get(f"/movies/{movie_id}")
