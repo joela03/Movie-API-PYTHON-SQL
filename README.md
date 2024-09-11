@@ -52,7 +52,25 @@ To run this project locally, follow these steps:
 - `pip` for managing Python packages
 - `virtualenv` (optional but recommended for environment management)
 
-API Endpoints
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/joela03/Movie-API-PYTHON-SQL.git
+   cd Movie-API-PYTHON-SQL
+2. Create and activate a virtual environment:
+    *python3 -m venv .venv*
+    *source env/bin/activate  # On Windows use `env\Scripts\activate`*
+3. Install dependencies:
+    *pip install -r requirements.txt*
+4. Set up PostgreSQL:
+    Ensure PostgreSQL is installed and running.
+    Create a database:
+    *CREATE DATABASE movie_db;*
+    Update the database connection string in the project config file (config.py or .env file depending on your setup).
+5. Run the python file
+    *python3 api.py*
+
+## API Endpoints
 Here is a summary of the main API endpoints:
 
 Method	Endpoint	  Description
