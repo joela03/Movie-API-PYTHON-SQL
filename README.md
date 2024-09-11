@@ -91,3 +91,15 @@ Testing
 To run the tests, use the following command:
 pytest test_api.py
 You can also use Postman to manually test the API endpoints.
+
+## Database Schema
+
+The movie database schema includes the following tables:
+Movie: Contains movie data such as title, genre, and release year.
+Country: Associates country_id to a country's name
+Languages: Associates language_id to a language
+Genre: Associates genre_id to a genre
+Movie_Genres: Associates a movie to multiple genre's
+
+To make the table's inside your database use the command:
+*psql -U "your user name" -d "your database name" -f schema.sql*
