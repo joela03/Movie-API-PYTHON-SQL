@@ -70,6 +70,13 @@ To run this project locally, follow these steps:
 5. Run the python file
     *python3 api.py*
 
+## Usage
+
+Once the API is running, you can interact with it via tools like Postman or curl.
+
+Example to list all movies:
+*curl http://127.0.0.1:5000/movies*
+
 ## API Endpoints
 Here is a summary of the main API endpoints:
 
